@@ -1,2 +1,4 @@
 servertest.ini
 servertest_SandboxVars.lua
+pzserver_SandboxVars.lua
+pzserver.ini
