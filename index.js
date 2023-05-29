@@ -1,59 +1,50 @@
 //########## DON'T EDIT ##########\\
 //Script V2
 const fs = require('fs');
+const linebreak = '\r\n'
 
+//Returns any number between min and max
 function randARB(min, max) {
     return Math.random() * (max - min) + min;
 }
 
+//Returns a whole number between min and max
 function randINT(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max + 1 - min) + min);
 }
 
+//Returns "true" or "false"
 function randTF() {
-    if (Math.random() < 0.5){return "true"}else{return "false"}; // Returns true 50% of the time, false 50% of the time
+    if (Math.random() < 0.5){return "true"}else{return "false"};
   }
 
-
-
-
-
 //########## SERVER INFO ##########\\
-var serverloc = "/home/pzserver/Zomboid/Server/"
+var serverloc ="./"
+//var serverloc = "/home/pzserver/Zomboid/Server/"
 var ininame = "pzserver.ini"
 var luaname = "pzserver_SandboxVars.lua"
 
-
-
-
+//Load saved Variables for server.ini from mem.json
+const mem = JSON.parse(fs.readFileSync(serverloc + 'mem.json', { encoding: 'utf8', flag: 'r' }));
+var WipeNumber = mem.memory.wipenumber
+var WipeID = mem.memory.resetid
+var PlayerID = mem.memory.playerid
 
 //########## HELP ##########\\
 //To randomize numbers and allow non-whole numbers use
 //randARB(low,high)
-
 //To randomize numbers and make sure the final response is a whole number use
 //randINT(low,high)
-
 //Variable info is shown under each variable.
-
 //To pick a random true or false use
 //randTF()
 
-
-
-
-
 //########## Variables for SandboxVars.lua ##########\\
-
-
-
 //##### GAME INFO #####\\
 var VERSION = 5
 //No Version options. Do not edit.
-
-
 
 //##### ZOMBIES #####\\
 var Zombies = 4
@@ -68,8 +59,6 @@ var Distribution = randINT(1, 2)
 // Default=1
 // 1 = Urban Focused
 // 2 = No Focus
-
-
 
 //##### DAY & NIGHT #####\\
 var DayLength = 3
@@ -114,8 +103,6 @@ var NightDarkness = 3
 // 2 = Dark
 // 3 = Normal
 
-
-
 //##### WEATHER #####\\
 var Temperature = randINT(1, 4)
 // Controls the global temperature. Default=3
@@ -143,8 +130,6 @@ var EnableSnowOnGround = true
 // If disabled snow will not accumulate on ground but will still be visible on vegetation and rooftops.
 // Options = true/false
 // Default = false
-
-
 
 //##### START TIME #####\\
 var StartYear = 1
@@ -191,8 +176,6 @@ var TimeSinceApo = randINT(1,12)
 // 11 = 10 Time units
 // 12 = 11 Time units
 
-
-
 //##### Utilities #####\\
 var WaterShut = randINT(2, 7)
 //Default=2
@@ -216,8 +199,6 @@ var ElecShut = randINT(2, 7)
 //7 = 2-6 Months
 var ElecShutModifier = randINT(1, 50)
 //Minimum=-1 Maximum=2147483647 Default=14
-
-
 
 //##### LOOT #####\\
 var FoodLoot = randINT(4, 6)
@@ -313,8 +294,6 @@ var SeenHoursPreventLootRespawn = randINT(0,24)
 // Maximum=2147483647
 // Default=0
 
-
-
 //##### FOOD #####\\
 var Nutrition = "true"
 // Nutritional value of food affects the player's condition.
@@ -332,8 +311,6 @@ var FridgeFactor = 3
 // 2 = Low
 // 3 = Normal
 // 4 = High
-
-
 
 //##### FARMING #####\\
 //These options confuse the fuck out of me. I don't know how they all work together. Good luck.
@@ -378,8 +355,6 @@ var PlantAbundance = 3
 //3 = Normal
 //4 = Abundant
 
-
-
 //##### FISHING & FORAGING #####\\   
 var NatureAbundance = 3
 // Controls the abundance of fish and general forage. Default=Normal
@@ -391,8 +366,6 @@ EnableTaintedWaterText = "true"
 // if disabled, tainted water will not have a warning marking it as such
 // Options = true/false
 // Default = false
-
-
 
 //##### PLAYER XP & Skills #####\\
 var XpMultiplier = randARB(1, 5)
@@ -427,8 +400,6 @@ var RearVulnerability = randINT(1, 3)
 // 1 = Low
 // 2 = Medium
 // 3 = High
-
-
 
 //##### Player Needs #####\\
 var StatsDecrease = 3
@@ -471,8 +442,6 @@ var EnablePoisoning = randINT(1, 2)
 // 1 = True
 // 2 = False
 
-
-
 //##### PLAYER CONSTRUCTION#####\\
 var ConstructionBonusPoints = randINT(3,4)
 // Gives player-built constructions extra hit points so they are more resistant to zombie damage.
@@ -486,15 +455,11 @@ var AllowExteriorGenerator = true
 // Options = true/false
 // Default = true
 
-
-
 //##### STARTER KIT #####\\
 var StarterKit = "false"
 // Spawn with chips, water bottle, school bag, baseball bat and a hammer.
 // Options = true/false
 // Default = false
-
-
 
 //##### BUILDINGS #####\\
 var LockedHouses = 6
@@ -514,8 +479,13 @@ var Alarm = 4
 // 4 = Sometimes
 // 5 = Often
 // 6 = Very Often
-
-
+var LightBulbLifespan = 1.0
+//The higher the value, the longer lightbulbs last before breaking.
+// If 0, lightbulbs will never break.
+//Does not affect vehicle headlights.
+//Minimum=0.00
+//Maximum=1000.00
+//Default=1.00
 
 //##### VEHICLES #####\\
 var ZombieAttractionMultiplier = 1.0
@@ -604,8 +574,6 @@ var EnableVehicles = true
 // Options = true/false
 // Default = true
 
-
-
 //##### FUEL #####\\
 var GeneratorFuelConsumption = 0.5
 // How much fuel is consumed per in-game hour.
@@ -653,8 +621,6 @@ var DaysForRottenFoodRemoval = -1
 // Minimum=-1
 // Maximum=2147483647
 // Default=-1
-
-
 
 //##### RANDOM EVENTS#####\\
 var Helicopter = randINT(1, 3)
@@ -711,8 +677,6 @@ var AnnotatedMapChance = randINT(1, 5)
 // 4 = Sometimes
 // 5 = Often
 
-
-
 //##### BLOOD #####\
 var BloodLevel = randINT(2, 4)
 // How much blood is sprayed on floor and walls.
@@ -721,19 +685,16 @@ var BloodLevel = randINT(2, 4)
 // 2 = Low
 // 3 = Normal
 // 4 = High
-
-
+var MaggotSpawn = randINT(1, 2)
+// Default=1
+// 1 = In and around bodies
+// 2 = In bodies only
 
 //##### ANTI GRIEF #####\\
 var FireSpread = "true"
 // Does fire spread?
 // Options = true/false
 // Default = true
-
-
-
-
-
 
 //########## SandboxVars.lua - Map ##########\\
 var AllowMiniMap = "false"
@@ -745,10 +706,6 @@ var AllowWorldMap = "true"
 var MapAllKnown = "false"
 // Options = true/false
 // Default = false
-
-
-
-
 
 //########## SandboxVars.lua - ZombieLore ##########\\
 var Cognition = 3
@@ -858,10 +815,6 @@ var DisableFakeDead = randINT(1, 2)
 // 1 = Some zombies in the world will pretend to be dead
 // 2 = Some zombies in the world, as well as some you 'kill', can pretend to be dead
 
-
-
-
-
 //########## SandboxVars.lua - ZombieConfig ##########\\
 var RespawnHours = randARB(0.00,144.00)
 // The number of hours that must pass before zombies may respawn in a cell. If zero, spawning is disabled.
@@ -922,21 +875,158 @@ var PopulationPeakMultiplier = randARB(0.00, 3.00)
 var PopulationPeakDay = randINT(1, 365)
 // The day when the population reaches it's peak. Minimum=1 Maximum=365 Default=28
 
-
-
-
+//########## SERVER.INI VARIABLES ##########\\
+var ServerWelcomeMessage='BROTON PROJECT RANDBOID <LINE> <LINE> We are on wipe number '+WipeNumber
+var ResetID=WipeID
+var ServerPlayerID=PlayerID
+var PVP='true'
+var PauseEmpty='true'
+var GlobalChat='true'
+var ChatStreams='s,r,a,w,y,sh,f,all'
+var Open='true'
+var AutoCreateUserInWhiteList='false'
+var DisplayUserName='true'
+var ShowFirstAndLastName='false'
+var SpawnPoint='0,0,0'
+var SafetySystem='true'
+var ShowSafety='true'
+var SafetyToggleTimer=2
+var SafetyCooldownTimer=3
+var SpawnItems=''
+var DefaultPort=16261
+var UDPPort=16262
+var Mods=''
+var Map='Muldraugh, KY'
+var DoLuaChecksum='true'
+var DenyLoginOnOverloadedServer='true'
+var Public='false'
+var PublicName='BROTON PROJECT RANDBOID'
+var PublicDescription='Server auto resets on the 1st of each month. Sever config files are automatically randomized. Factions & Safehouse are on.'
+var MaxPlayers=32
+var PingLimit=400
+var HoursForLootRespawn=0
+var MaxItemsForLootRespawn=4
+var ConstructionPreventsLootRespawn='true'
+var DropOffWhiteListAfterDeath='false'
+var NoFire='false'
+var AnnounceDeath='true'
+var MinutesPerPage=0.25
+var SaveWorldEveryMinutes=0
+var PlayerSafehouse='true'
+var AdminSafehouse='false'
+var SafehouseAllowTrepass='true'
+var SafehouseAllowFire='true'
+var SafehouseAllowLoot='true'
+var SafehouseAllowRespawn='true'
+var SafehouseDaySurvivedToClaim=0
+var SafeHouseRemovalTime=144
+var SafehouseAllowNonResidential='true'
+var AllowDestructionBySledgehammer='true'
+var SledgehammerOnlyInSafehouse='false'
+var KickFastPlayers='false'
+var RCONPort=27015
+var RCONPassword=''
+var DiscordEnable='false'
+var DiscordToken=''
+var DiscordChannel=''
+var DiscordChannelID=''
+var Password='HelloBrother'
+var MaxAccountsPerUser=0
+var AllowCoop='true'
+var SleepAllowed='false'
+var SleepNeeded='false'
+var KnockedDownAllowed='true'
+var SneakModeHideFromOtherPlayers='true'
+var WorkshopItems=''
+var SteamScoreboard='true'
+var SteamVAC='true'
+var UPnP='true'
+var VoiceEnable='true'
+var VoiceMinDistance=10.0
+var VoiceMaxDistance=100.0
+var Voice3D='true'
+var SpeedLimit=70.0
+var LoginQueueEnabled='false'
+var LoginQueueConnectTimeout=60
+var server_browser_announced_ip=''
+var PlayerRespawnWithSelf='false'
+var PlayerRespawnWithOther='false'
+var FastForwardMultiplier=40.0
+var DisableSafehouseWhenPlayerConnected='false'
+var Faction='true'
+var FactionDaySurvivedToCreate=0
+var FactionPlayersRequiredForTag=1
+var DisableRadioStaff='false'
+var DisableRadioAdmin='true'
+var DisableRadioGM='true'
+var DisableRadioOverseer='false'
+var DisableRadioModerator='false'
+var DisableRadioInvisible='true'
+var ClientCommandFilter='-vehicle.*;+vehicle.damageWindow;+vehicle.fixPart;+vehicle.installPart;+vehicle.uninstallPart'
+var ClientActionLogs='ISEnterVehicle;ISExitVehicle;ISTakeEngineParts;'
+var PerkLogs='true'
+var ItemNumbersLimitPerContainer=0
+var BloodSplatLifespanDays=0
+var AllowNonAsciiUsername='false'
+var BanKickGlobalSound='true'
+var RemovePlayerCorpsesOnCorpseRemoval='false'
+var TrashDeleteAll='true'
+var PVPMeleeWhileHitReaction='false'
+var MouseOverToSeeDisplayName='true'
+var HidePlayersBehindYou='true'
+var PVPMeleeDamageModifier=30.0
+var PVPFirearmDamageModifier=50.0
+var CarEngineAttractionModifier=0.5
+var PlayerBumpPlayer='false'
+var MapRemotePlayerVisibility=2
+var BackupsCount=5
+var BackupsOnStart='true'
+var BackupsOnVersionChange=true
+var BackupsPeriod=0
+var AntiCheatProtectionType1='true'
+var AntiCheatProtectionType2='true'
+var AntiCheatProtectionType3='true'
+var AntiCheatProtectionType4='true'
+var AntiCheatProtectionType5='true'
+var AntiCheatProtectionType6='true'
+var AntiCheatProtectionType7='true'
+var AntiCheatProtectionType8='true'
+var AntiCheatProtectionType9='true'
+var AntiCheatProtectionType10='true'
+var AntiCheatProtectionType11='true'
+var AntiCheatProtectionType12='true'
+var AntiCheatProtectionType13='true'
+var AntiCheatProtectionType14='true'
+var AntiCheatProtectionType15='true'
+var AntiCheatProtectionType16='true'
+var AntiCheatProtectionType17='true'
+var AntiCheatProtectionType18='true'
+var AntiCheatProtectionType19='true'
+var AntiCheatProtectionType20='true'
+var AntiCheatProtectionType21='true'
+var AntiCheatProtectionType22='true'
+var AntiCheatProtectionType23='true'
+var AntiCheatProtectionType24='true'
+var AntiCheatProtectionType2ThresholdMultiplier=3.0
+var AntiCheatProtectionType3ThresholdMultiplier=1.0
+var AntiCheatProtectionType4ThresholdMultiplier=1.0
+var AntiCheatProtectionType9ThresholdMultiplier=1.0
+var AntiCheatProtectionType15ThresholdMultiplier=1.0
+var AntiCheatProtectionType20ThresholdMultiplier=1.0
+var AntiCheatProtectionType22ThresholdMultiplier=1.0
+var AntiCheatProtectionType24ThresholdMultiplier=6.0
 
 //########## DO NOT EDIT ##########\\
 //Complie SandboxVars.lua
-var vars = ''
-var map = 'Map = {},'
-var ZombieLore = 'ZombieLore = {},'
-var ZombieConfig = 'ZombieConfig = {},'
-var sandboxVars = 'SandboxVars = {'+vars+map+ZombieLore+zombieConfig+'}';
+var vars = "VERSION = " + VERSION + ","+"Zombies = " + Zombies + ","+"Distribution = " + Distribution + ","+"DayLength = " + DayLength + ","+"StartYear = " + StartYear + ","+"StartMonth = " + StartMonth + ","+"StartDay = " + StartDay + ","+"StartTime = " + StartTime + ","+"WaterShut = " + WaterShut + ","+"ElecShut = " + ElecShut + ","+"WaterShutModifier = " + WaterShutModifier + ","+"ElecShutModifier = " + ElecShutModifier + ","+"FoodLoot = " + FoodLoot + ","+"CannedFoodLoot = " + CannedFoodLoot + ","+"LiteratureLoot = " + LiteratureLoot + ","+"SurvivalGearsLoot = " + SurvivalGearsLoot + ","+"MedicalLoot = " + MedicalLoot + ","+"WeaponLoot = " + WeaponLoot + ","+"RangedWeaponLoot = " + RangedWeaponLoot + ","+"AmmoLoot = " + AmmoLoot + ","+"MechanicsLoot = " + MechanicsLoot + ","+"OtherLoot = " + OtherLoot + ","+"Temperature = " + Temperature + ","+"Rain = " + Rain + ","+"ErosionSpeed = " + ErosionSpeed + ","+"ErosionDays = " + ErosionDays + ","+"XpMultiplier = " + XpMultiplier + ","+"XpMultiplierAffectsPassive = " + XpMultiplierAffectsPassive + ","+"ZombieAttractionMultiplier = " + ZombieAttractionMultiplier + ","+"VehicleEasyUse = " + VehicleEasyUse + ","+"Farming = " + Farming + ","+"CompostTime = " + CompostTime + ","+"StatsDecrease = " + StatsDecrease + ","+"NatureAbundance = " + NatureAbundance + ","+"Alarm = " + Alarm + ","+"LockedHouses = " + LockedHouses + ","+"StarterKit = " + StarterKit + ","+"Nutrition = " + Nutrition + ","+"FoodRotSpeed = " + FoodRotSpeed + ","+"FridgeFactor = " + FridgeFactor + ","+"LootRespawn = " + LootRespawn + ","+"SeenHoursPreventLootRespawn = " + SeenHoursPreventLootRespawn + ","+"WorldItemRemovalList = " + WorldItemRemovalList + ","+"HoursForWorldItemRemoval = " + HoursForWorldItemRemoval + ","+"ItemRemovalListBlacklistToggle = " + ItemRemovalListBlacklistToggle + ","+"TimeSinceApo = " + TimeSinceApo + ","+"PlantResilience = " + PlantResilience + ","+"PlantAbundance = " + PlantAbundance + ","+"EndRegen = " + EndRegen + ","+"Helicopter = " + Helicopter + ","+"MetaEvent = " + MetaEvent + ","+"SleepingEvent = " + SleepingEvent + ","+"GeneratorSpawning = " + GeneratorSpawning + ","+"GeneratorFuelConsumption = " + GeneratorFuelConsumption + ","+"SurvivorHouseChance = " + SurvivorHouseChance + ","+"VehicleStoryChance = " + VehicleStoryChance + ","+"ZoneStoryChance = " + ZoneStoryChance + ","+"AnnotatedMapChance = " + AnnotatedMapChance + ","+"CharacterFreePoints = " + CharacterFreePoints + ","+"ConstructionBonusPoints = " + ConstructionBonusPoints + ","+"NightDarkness = " + NightDarkness + ","+"NightLength = " + NightLength + ","+"InjurySeverity = " + InjurySeverity + ","+"BoneFracture = " + BoneFracture + ","+"HoursForCorpseRemoval = " + HoursForCorpseRemoval + ","+"DecayingCorpseHealthImpact = " + DecayingCorpseHealthImpact + ","+"BloodLevel = " + BloodLevel + ","+"ClothingDegradation = " + ClothingDegradation + ","+"FireSpread = " + FireSpread + ","+"DaysForRottenFoodRemoval = " + DaysForRottenFoodRemoval + ","+"AllowExteriorGenerator = " + AllowExteriorGenerator + ","+"MaxFogIntensity = " + MaxFogIntensity + ","+"MaxRainFxIntensity = " + MaxRainFxIntensity + ","+"EnableSnowOnGround = " + EnableSnowOnGround + ","+"MultiHitZombies = " + MultiHitZombies + ","+"RearVulnerability = " + RearVulnerability + ","+"AttackBlockMovements = " + AttackBlockMovements + ","+"AllClothesUnlocked = " + AllClothesUnlocked + ","+"EnableTaintedWaterText = " + EnableTaintedWaterText + ","+"CarSpawnRate = " + CarSpawnRate + ","+"ChanceHasGas = " + ChanceHasGas + ","+"InitialGas = " + InitialGas + ","+"FuelStationGas = " + FuelStationGas + ","+"CarGasConsumption = " + CarGasConsumption + ","+"LockedCar = " + LockedCar + ","+"CarGeneralCondition = " + CarGeneralCondition + ","+"CarDamageOnImpact = " + CarDamageOnImpact + ","+"DamageToPlayerFromHitByACar = " + DamageToPlayerFromHitByACar + ","+"TrafficJam = " + TrafficJam + ","+"CarAlarm = " + CarAlarm + ","+"PlayerDamageFromCrash = " + PlayerDamageFromCrash + ","+"SirenShutoffHours = " + SirenShutoffHours + ","+"RecentlySurvivorVehicles = " + RecentlySurvivorVehicles + ","+"EnableVehicles = " + EnableVehicles + ","+"EnablePoisoning = " + EnablePoisoning + ","+"MaggotSpawn = " + MaggotSpawn + ","+"LightBulbLifespan = " + LightBulbLifespan + ","
+var map = 'Map = {'+"AllowMiniMap = " + AllowMiniMap + ","+"AllowWorldMap = " + AllowWorldMap + ","+"MapAllKnown = " + MapAllKnown + ","+'},'
+var ZombieLore = 'ZombieLore = {'+"Speed = " + Speed + ","+"Strength = " + Strength + ","+"Toughness = " + Toughness + ","+"Transmission = " + Transmission + ","+"Mortality = " + Mortality + ","+"Reanimate = " + Reanimate + ","+"Cognition = " + Cognition + ","+"CrawlUnderVehicle = " + CrawlUnderVehicle + ","+"Memory = " + Memory + ","+"Sight = " + Sight + ","+"Hearing = " + Hearing + ","+"ThumpNoChasing = " + ThumpNoChasing + ","+"ThumpOnConstruction = " + ThumpOnConstruction + ","+"ActiveOnly = " + ActiveOnly + ","+"TriggerHouseAlarm = " + TriggerHouseAlarm + ","+"ZombiesDragDown = " + ZombiesDragDown + ","+"ZombiesFenceLunge = " + ZombiesFenceLunge + ","+"DisableFakeDead = " + DisableFakeDead + ","+'},'
+var ZombieConfig = 'ZombieConfig = {'+"PopulationMultiplier = " + PopulationMultiplier + ","+"PopulationStartMultiplier = " + PopulationStartMultiplier + ","+"PopulationPeakMultiplier = " + PopulationPeakMultiplier + ","+"PopulationPeakDay = " + PopulationPeakDay + ","+"RespawnHours = " + RespawnHours + ","+"RespawnUnseenHours = " + RespawnUnseenHours + ","+"RespawnMultiplier = " + RespawnMultiplier + ","+"RedistributeHours = " + RedistributeHours + ","+"FollowSoundDistance = " + FollowSoundDistance + ","+"RallyGroupSize = " + RallyGroupSize + ","+"RallyTravelDistance = " + RallyTravelDistance + ","+"RallyGroupSeparation = " + RallyGroupSeparation + ","+"RallyGroupRadius = " + RallyGroupRadius + ","+'},'
+var sandboxVars = 'SandboxVars = {'+vars+map+ZombieLore+ZombieConfig+'}';
 var luaCode = sandboxVars
 var luaPath = serverloc + luaname
 
-//Write servertest_SandboxVars.lua
+//Write SandboxVars.lua
 fs.writeFile(luaPath, luaCode, (err) => {
     if (err) {
         console.error('Error writing Lua file:', err);
@@ -945,16 +1035,8 @@ fs.writeFile(luaPath, luaCode, (err) => {
     }
 });
 
-//Load Variables for servertest.ini from mem.json
-const mem = JSON.parse(fs.readFileSync(serverloc + 'mem.json', { encoding: 'utf8', flag: 'r' }));
-var WipeNumber = mem.memory.wipenumber
-var ResetID = mem.memory.resetid
-var PlayerID = mem.memory.playerid
-
-//Compile servertest.ini
-var iniinc = 'ServerWelcomeMessage=BROTON PROJECT RANDBOID <LINE> <LINE> We are on wipe number ' + WipeNumber + '\r\n' + 'ResetID=' + ResetID + '\r\n' + 'ServerPlayerID=' + PlayerID
-var inistatic = '\r\nPVP=true\r\nPauseEmpty=true\r\nGlobalChat=true\r\nChatStreams=s,r,a,w,y,sh,f,all\r\nOpen=true\r\nAutoCreateUserInWhiteList=false\r\nDisplayUserName=true\r\nShowFirstAndLastName=false\r\nSpawnPoint=0,0,0\r\nSafetySystem=true\r\nShowSafety=true\r\nSafetyToggleTimer=2\r\nSafetyCooldownTimer=3\r\nSpawnItems=\r\nDefaultPort=16261\r\nUDPPort=16262\r\nMods=\r\nMap=Muldraugh, KY\r\nDoLuaChecksum=true\r\nDenyLoginOnOverloadedServer=true\r\nPublic=false\r\nPublicName=BROTON PROJECT RANDBOID\r\nPublicDescription=Server auto resets on the 1st of each month. Sever config files are automatically randomized. Factions & Safehouse are on.\r\nMaxPlayers=32\r\nPingLimit=400\r\nHoursForLootRespawn=0\r\nMaxItemsForLootRespawn=4\r\nConstructionPreventsLootRespawn=true\r\nDropOffWhiteListAfterDeath=false\r\nNoFire=false\r\nAnnounceDeath=true\r\nMinutesPerPage=0.25\r\nSaveWorldEveryMinutes=0\r\nPlayerSafehouse=true\r\nAdminSafehouse=false\r\nSafehouseAllowTrepass=true\r\nSafehouseAllowFire=true\r\nSafehouseAllowLoot=true\r\nSafehouseAllowRespawn=true\r\nSafehouseDaySurvivedToClaim=0\r\nSafeHouseRemovalTime=144\r\nSafehouseAllowNonResidential=true\r\nAllowDestructionBySledgehammer=true\r\nSledgehammerOnlyInSafehouse=false\r\nKickFastPlayers=false\r\nRCONPort=27015\r\nRCONPassword=\r\nDiscordEnable=false\r\nDiscordToken=\r\nDiscordChannel=\r\nDiscordChannelID=\r\nPassword=HelloBrother\r\nMaxAccountsPerUser=0\r\nAllowCoop=true\r\nSleepAllowed=false\r\nSleepNeeded=false\r\nKnockedDownAllowed=true\r\nSneakModeHideFromOtherPlayers=true\r\nWorkshopItems=\r\nSteamScoreboard=true\r\nSteamVAC=true\r\nUPnP=true\r\nVoiceEnable=true\r\nVoiceMinDistance=10.0\r\nVoiceMaxDistance=100.0\r\nVoice3D=true\r\nSpeedLimit=70.0\r\nLoginQueueEnabled=false\r\nLoginQueueConnectTimeout=60\r\nserver_browser_announced_ip=\r\nPlayerRespawnWithSelf=false\r\nPlayerRespawnWithOther=false\r\nFastForwardMultiplier=40.0\r\nDisableSafehouseWhenPlayerConnected=false\r\nFaction=true\r\nFactionDaySurvivedToCreate=0\r\nFactionPlayersRequiredForTag=1\r\nDisableRadioStaff=false\r\nDisableRadioAdmin=true\r\nDisableRadioGM=true\r\nDisableRadioOverseer=false\r\nDisableRadioModerator=false\r\nDisableRadioInvisible=true\r\nClientCommandFilter=-vehicle.*;+vehicle.damageWindow;+vehicle.fixPart;+vehicle.installPart;+vehicle.uninstallPart\r\nClientActionLogs=ISEnterVehicle;ISExitVehicle;ISTakeEngineParts;\r\nPerkLogs=true\r\nItemNumbersLimitPerContainer=0\r\nBloodSplatLifespanDays=0\r\nAllowNonAsciiUsername=false\r\nBanKickGlobalSound=true\r\nRemovePlayerCorpsesOnCorpseRemoval=false\r\nTrashDeleteAll=true\r\nPVPMeleeWhileHitReaction=false\r\nMouseOverToSeeDisplayName=true\r\nHidePlayersBehindYou=true\r\nPVPMeleeDamageModifier=30.0\r\nPVPFirearmDamageModifier=50.0\r\nCarEngineAttractionModifier=0.5\r\nPlayerBumpPlayer=false\r\nMapRemotePlayerVisibility=2\r\nBackupsCount=5\r\nBackupsOnStart=true\r\nBackupsOnVersionChange=true\r\nBackupsPeriod=0\r\nAntiCheatProtectionType1=true\r\nAntiCheatProtectionType2=true\r\nAntiCheatProtectionType3=true\r\nAntiCheatProtectionType4=true\r\nAntiCheatProtectionType5=true\r\nAntiCheatProtectionType6=true\r\nAntiCheatProtectionType7=true\r\nAntiCheatProtectionType8=true\r\nAntiCheatProtectionType9=true\r\nAntiCheatProtectionType10=true\r\nAntiCheatProtectionType11=true\r\nAntiCheatProtectionType12=true\r\nAntiCheatProtectionType13=true\r\nAntiCheatProtectionType14=true\r\nAntiCheatProtectionType15=true\r\nAntiCheatProtectionType16=true\r\nAntiCheatProtectionType17=true\r\nAntiCheatProtectionType18=true\r\nAntiCheatProtectionType19=true\r\nAntiCheatProtectionType20=true\r\nAntiCheatProtectionType21=true\r\nAntiCheatProtectionType22=true\r\nAntiCheatProtectionType23=true\r\nAntiCheatProtectionType24=true\r\nAntiCheatProtectionType2ThresholdMultiplier=3.0\r\nAntiCheatProtectionType3ThresholdMultiplier=1.0\r\nAntiCheatProtectionType4ThresholdMultiplier=1.0\r\nAntiCheatProtectionType9ThresholdMultiplier=1.0\r\nAntiCheatProtectionType15ThresholdMultiplier=1.0\r\nAntiCheatProtectionType20ThresholdMultiplier=1.0\r\nAntiCheatProtectionType22ThresholdMultiplier=1.0\r\nAntiCheatProtectionType24ThresholdMultiplier=6.0'
-var iniCode = iniinc + inistatic
+//Compile server.ini
+var iniCode = 'ServerWelcomeMessage = ' + ServerWelcomeMessage + linebreak +"ResetID = " + ResetID + linebreak +"ServerPlayerID = " + ServerPlayerID + linebreak +"PVP = " + PVP + linebreak +"PauseEmpty = " + PauseEmpty + linebreak +"GlobalChat = " + GlobalChat + linebreak +"ChatStreams = " + ChatStreams + linebreak +"Open = " + Open + linebreak +"AutoCreateUserInWhiteList = " + AutoCreateUserInWhiteList + linebreak +"DisplayUserName = " + DisplayUserName + linebreak +"ShowFirstAndLastName = " + ShowFirstAndLastName + linebreak +"SpawnPoint = " + SpawnPoint + linebreak +"SafetySystem = " + SafetySystem + linebreak +"ShowSafety = " + ShowSafety + linebreak +"SafetyToggleTimer = " + SafetyToggleTimer + linebreak +"SafetyCooldownTimer = " + SafetyCooldownTimer + linebreak +"SpawnItems = " + SpawnItems + linebreak +"DefaultPort = " + DefaultPort + linebreak +"UDPPort = " + UDPPort + linebreak +"Mods = " + Mods + linebreak +"Map = " + Map + linebreak +"DoLuaChecksum = " + DoLuaChecksum + linebreak +"DenyLoginOnOverloadedServer = " + DenyLoginOnOverloadedServer + linebreak +"Public = " + Public + linebreak +"PublicName = " + PublicName + linebreak +"PublicDescription = " + PublicDescription + linebreak +"MaxPlayers = " + MaxPlayers + linebreak +"PingLimit = " + PingLimit + linebreak +"HoursForLootRespawn = " + HoursForLootRespawn + linebreak +"MaxItemsForLootRespawn = " + MaxItemsForLootRespawn + linebreak +"ConstructionPreventsLootRespawn = " + ConstructionPreventsLootRespawn + linebreak +"DropOffWhiteListAfterDeath = " + DropOffWhiteListAfterDeath + linebreak +"NoFire = " + NoFire + linebreak +"AnnounceDeath = " + AnnounceDeath + linebreak +"MinutesPerPage = " + MinutesPerPage + linebreak +"SaveWorldEveryMinutes = " + SaveWorldEveryMinutes + linebreak +"PlayerSafehouse = " + PlayerSafehouse + linebreak +"AdminSafehouse = " + AdminSafehouse + linebreak +"SafehouseAllowTrepass = " + SafehouseAllowTrepass + linebreak +"SafehouseAllowFire = " + SafehouseAllowFire + linebreak +"SafehouseAllowLoot = " + SafehouseAllowLoot + linebreak +"SafehouseAllowRespawn = " + SafehouseAllowRespawn + linebreak +"SafehouseDaySurvivedToClaim = " + SafehouseDaySurvivedToClaim + linebreak +"SafeHouseRemovalTime = " + SafeHouseRemovalTime + linebreak +"SafehouseAllowNonResidential = " + SafehouseAllowNonResidential + linebreak +"AllowDestructionBySledgehammer = " + AllowDestructionBySledgehammer + linebreak +"SledgehammerOnlyInSafehouse = " + SledgehammerOnlyInSafehouse + linebreak +"KickFastPlayers = " + KickFastPlayers + linebreak +"RCONPort = " + RCONPort + linebreak +"RCONPassword = " + RCONPassword + linebreak +"DiscordEnable = " + DiscordEnable + linebreak +"DiscordToken = " + DiscordToken + linebreak +"DiscordChannel = " + DiscordChannel + linebreak +"DiscordChannelID = " + DiscordChannelID + linebreak +"Password = " + Password + linebreak +"MaxAccountsPerUser = " + MaxAccountsPerUser + linebreak +"AllowCoop = " + AllowCoop + linebreak +"SleepAllowed = " + SleepAllowed + linebreak +"SleepNeeded = " + SleepNeeded + linebreak +"KnockedDownAllowed = " + KnockedDownAllowed + linebreak +"SneakModeHideFromOtherPlayers = " + SneakModeHideFromOtherPlayers + linebreak +"WorkshopItems = " + WorkshopItems + linebreak +"SteamScoreboard = " + SteamScoreboard + linebreak +"SteamVAC = " + SteamVAC + linebreak +"UPnP = " + UPnP + linebreak +"VoiceEnable = " + VoiceEnable + linebreak +"VoiceMinDistance = " + VoiceMinDistance + linebreak +"VoiceMaxDistance = " + VoiceMaxDistance + linebreak +"Voice3D = " + Voice3D + linebreak +"SpeedLimit = " + SpeedLimit + linebreak +"LoginQueueEnabled = " + LoginQueueEnabled + linebreak +"LoginQueueConnectTimeout = " + LoginQueueConnectTimeout + linebreak +"server_browser_announced_ip = " + server_browser_announced_ip + linebreak +"PlayerRespawnWithSelf = " + PlayerRespawnWithSelf + linebreak +"PlayerRespawnWithOther = " + PlayerRespawnWithOther + linebreak +"FastForwardMultiplier = " + FastForwardMultiplier + linebreak +"DisableSafehouseWhenPlayerConnected = " + DisableSafehouseWhenPlayerConnected + linebreak +"Faction = " + Faction + linebreak +"FactionDaySurvivedToCreate = " + FactionDaySurvivedToCreate + linebreak +"FactionPlayersRequiredForTag = " + FactionPlayersRequiredForTag + linebreak +"DisableRadioStaff = " + DisableRadioStaff + linebreak +"DisableRadioAdmin = " + DisableRadioAdmin + linebreak +"DisableRadioGM = " + DisableRadioGM + linebreak +"DisableRadioOverseer = " + DisableRadioOverseer + linebreak +"DisableRadioModerator = " + DisableRadioModerator + linebreak +"DisableRadioInvisible = " + DisableRadioInvisible + linebreak +"ClientCommandFilter = " + ClientCommandFilter + linebreak +"ClientActionLogs = " + ClientActionLogs + linebreak +"PerkLogs = " + PerkLogs + linebreak +"ItemNumbersLimitPerContainer = " + ItemNumbersLimitPerContainer + linebreak +"BloodSplatLifespanDays = " + BloodSplatLifespanDays + linebreak +"AllowNonAsciiUsername = " + AllowNonAsciiUsername + linebreak +"BanKickGlobalSound = " + BanKickGlobalSound + linebreak +"RemovePlayerCorpsesOnCorpseRemoval = " + RemovePlayerCorpsesOnCorpseRemoval + linebreak +"TrashDeleteAll = " + TrashDeleteAll + linebreak +"PVPMeleeWhileHitReaction = " + PVPMeleeWhileHitReaction + linebreak +"MouseOverToSeeDisplayName = " + MouseOverToSeeDisplayName + linebreak +"HidePlayersBehindYou = " + HidePlayersBehindYou + linebreak +"PVPMeleeDamageModifier = " + PVPMeleeDamageModifier + linebreak +"PVPFirearmDamageModifier = " + PVPFirearmDamageModifier + linebreak +"CarEngineAttractionModifier = " + CarEngineAttractionModifier + linebreak +"PlayerBumpPlayer = " + PlayerBumpPlayer + linebreak +"MapRemotePlayerVisibility = " + MapRemotePlayerVisibility + linebreak +"BackupsCount = " + BackupsCount + linebreak +"BackupsOnStart = " + BackupsOnStart + linebreak +"BackupsOnVersionChange = " + BackupsOnVersionChange + linebreak +"BackupsPeriod = " + BackupsPeriod + linebreak +"AntiCheatProtectionType1 = " + AntiCheatProtectionType1 + linebreak +"AntiCheatProtectionType2 = " + AntiCheatProtectionType2 + linebreak +"AntiCheatProtectionType3 = " + AntiCheatProtectionType3 + linebreak +"AntiCheatProtectionType4 = " + AntiCheatProtectionType4 + linebreak +"AntiCheatProtectionType5 = " + AntiCheatProtectionType5 + linebreak +"AntiCheatProtectionType6 = " + AntiCheatProtectionType6 + linebreak +"AntiCheatProtectionType7 = " + AntiCheatProtectionType7 + linebreak +"AntiCheatProtectionType8 = " + AntiCheatProtectionType8 + linebreak +"AntiCheatProtectionType9 = " + AntiCheatProtectionType9 + linebreak +"AntiCheatProtectionType10 = " + AntiCheatProtectionType10 + linebreak +"AntiCheatProtectionType11 = " + AntiCheatProtectionType11 + linebreak +"AntiCheatProtectionType12 = " + AntiCheatProtectionType12 + linebreak +"AntiCheatProtectionType13 = " + AntiCheatProtectionType13 + linebreak +"AntiCheatProtectionType14 = " + AntiCheatProtectionType14 + linebreak +"AntiCheatProtectionType15 = " + AntiCheatProtectionType15 + linebreak +"AntiCheatProtectionType16 = " + AntiCheatProtectionType16 + linebreak +"AntiCheatProtectionType17 = " + AntiCheatProtectionType17 + linebreak +"AntiCheatProtectionType18 = " + AntiCheatProtectionType18 + linebreak +"AntiCheatProtectionType19 = " + AntiCheatProtectionType19 + linebreak +"AntiCheatProtectionType20 = " + AntiCheatProtectionType20 + linebreak +"AntiCheatProtectionType21 = " + AntiCheatProtectionType21 + linebreak +"AntiCheatProtectionType22 = " + AntiCheatProtectionType22 + linebreak +"AntiCheatProtectionType23 = " + AntiCheatProtectionType23 + linebreak +"AntiCheatProtectionType24 = " + AntiCheatProtectionType24 + linebreak +"AntiCheatProtectionType2ThresholdMultiplier = " + AntiCheatProtectionType2ThresholdMultiplier + linebreak +"AntiCheatProtectionType3ThresholdMultiplier = " + AntiCheatProtectionType3ThresholdMultiplier + linebreak +"AntiCheatProtectionType4ThresholdMultiplier = " + AntiCheatProtectionType4ThresholdMultiplier + linebreak +"AntiCheatProtectionType9ThresholdMultiplier = " + AntiCheatProtectionType9ThresholdMultiplier + linebreak +"AntiCheatProtectionType15ThresholdMultiplier = " + AntiCheatProtectionType15ThresholdMultiplier + linebreak +"AntiCheatProtectionType20ThresholdMultiplier = " + AntiCheatProtectionType20ThresholdMultiplier + linebreak +"AntiCheatProtectionType22ThresholdMultiplier = " + AntiCheatProtectionType22ThresholdMultiplier + linebreak +"AntiCheatProtectionType24ThresholdMultiplier = " + AntiCheatProtectionType24ThresholdMultiplier
 var iniPath = serverloc + ininame
 
 //Write servertest.ini
