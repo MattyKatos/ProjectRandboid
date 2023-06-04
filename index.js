@@ -1026,8 +1026,6 @@ var sandboxVars = 'SandboxVars = {'+vars+map+ZombieLore+ZombieConfig+'}';
 var luaCode = sandboxVars
 var luaPath = serverloc + luaname
 
-console.log(luaCode)
-
 //Write SandboxVars.lua
 fs.writeFile(luaPath, luaCode, (err) => {
     if (err) {
